@@ -1,3 +1,3 @@
 # BIF244
 
-BIF244 Class Repo
+Respository for BIF244 Introduction to Scripting Class.
