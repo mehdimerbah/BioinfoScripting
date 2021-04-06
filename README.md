@@ -1,8 +1,4 @@
 # BIF244
-
-<<<<<<< HEAD
-Respository for BIF244 Introduction to Scripting Class.
-=======
 Repository for BIF244 Introduction to Scripting class.
 
 ## Python
@@ -14,4 +10,4 @@ Repository for BIF244 Introduction to Scripting class.
 ## Perl
 
 TBA.
->>>>>>> 57c78b6e8e763b24c7615144e46e3e5cf572c172
+
