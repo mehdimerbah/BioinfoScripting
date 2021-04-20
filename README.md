@@ -7,6 +7,8 @@ Repository for BIF244 Introduction to Scripting class.
 
 `knapsack.py` is an implementation of a Dynamic Programming solution to the [Knapsack](https://en.wikipedia.org/wiki/Knapsack_problem) problem.
 
+`Python Modules` Seqential modules for Python3 from scratch.
+
 ## Perl
 
 TBA.
