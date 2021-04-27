@@ -1,0 +1,23 @@
+Student _ID	Last_Name	First_Name
+201802470	Abi Chahine	Frederick
+201906027	Abou Shahine	Mohammad
+202004287	Abrahamian	Zohrab
+201706235	Al Khoury	Nour
+201901751	Assaf	Nour
+202003604	Atallah	Roberto
+201504706	Chouaifaty	Pia
+202003025	El Bayssari	Ramona
+201903122	El Hasbani	Ghadi
+201900572	Faour	Ahmad
+201802844	Lichaa El Khoury	Elissa
+201806753	Merbah	Mohamed Mehdi
+202003935	Mitri	Joya Maria
+201700556	Nader	Antoine
+201902367	Onaisy	Hasan
+201800346	Rizk	Alexandre
+202001132	Shebaby	Marc
+201803143	Awada	Ghadeer
+201703775	Damaj	Chafic
+201902080	El Eid	Laya
+201700010	Hassoun	Tarek
+201803170	Houmani	Ahmad
