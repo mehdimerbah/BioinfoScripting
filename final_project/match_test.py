@@ -2,11 +2,46 @@
 import sys
 import re
 
+args = sys.argv
+if len(args) == 1:
+    print('Please Specify filename')
+    sys.exit()
+
+try:
+    f = open(args[1], 'rt')
+except:
+    print('File Not Found!')
+    sys.exit()
+
+
+################# Reading the sequence in ###########################
+
+def readFasta(filename):
+	"""This function reads in a fasta file and stores the sequences in a dictionary
+	seqDict = {'SeqID' : 'SEQ'}"""
+	entries = {}
+	for line in f:
+	    if '>' in line:
+	        seq_id = line.strip()[1:]
+	        entries[seq_id] = []
+	    else:
+	        stripped = list(line.strip("\n").replace(" ",""))
+	        entries[seq_id].extend(stripped)
+
+	for key,val in entries.items():
+		entries[key] = "".join(val)
+
+	return entries
+
 
 
 #Here we will use a dummy sequence then apply on all seqs in Fasta
-seq = "ccgtgctgcagctacgcagtcatggACACGTCAGCGTACGacgatcgactgcagACGAGTCGACGTTAGCcacaaccgctcggcAGCTTCTTCGCAacaaccgctcggc"
-   
+#seq = "ccgtgctgcagctacgcagtcatggACACGTCAGCGTACGacgatcgactgcagACGAGTCGACGTTAGCcacaaccgctcggcAGCTTCTTCGCAacaaccgctcggc"
+  
+seq_dict = readFasta(f)
+
+seq = seq_dict['Rosa_seq']
+print(seq)
 #Set the sequence pattern we want to match in the following order:
 # (primer)((EXON)((intron)(EXON))*)(downstreamseq)
 # the compile function from the re module is just a nice aesthetic and to save time
@@ -47,7 +82,7 @@ intron_base_proportion = {}
 for base in set(spliced_introns.upper()):
 	intron_base_proportion[base] = round(spliced_introns.upper().count(base)/len(spliced_introns)*100, 2)
 
-
+"""
 print(exon_match_list)
 print(intron_match_list)
 print(spliced_exons)
@@ -61,12 +96,14 @@ print("intron props: ")
 for key, val in intron_base_proportion.items():
 	print(key, ":", val)
 
-seqID = 'Rosa'
-seq_stats = (seqID, exon_count, intron_count, avg_exon_len, avg_intron_len, exon_base_proportion['A'], exon_base_proportion['C'], exon_base_proportion['G'], exon_base_proportion['T'],
+
+"""
+#seqID = 'Rosa'
+seq_stats = ('Rosa_seq', exon_count, intron_count, avg_exon_len, avg_intron_len, exon_base_proportion['A'], exon_base_proportion['C'], exon_base_proportion['G'], exon_base_proportion['T'],
  			intron_base_proportion['A'], intron_base_proportion['C'], intron_base_proportion['G'], intron_base_proportion['T'])
 
-print ("{:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10}".format(seqID, exon_count, intron_count, avg_exon_len, avg_intron_len, exon_base_proportion['A'], exon_base_proportion['C'], exon_base_proportion['G'], exon_base_proportion['T'],
- 			intron_base_proportion['A'], intron_base_proportion['C'], intron_base_proportion['G'], intron_base_proportion['T']))
+#print ("{:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10} {:<10}".format(seqID, exon_count, intron_count, avg_exon_len, avg_intron_len, exon_base_proportion['A'], exon_base_proportion['C'], exon_base_proportion['G'], exon_base_proportion['T'],
+ #			intron_base_proportion['A'], intron_base_proportion['C'], intron_base_proportion['G'], intron_base_proportion['T']))
 
 
 print ('%s %10d %10d %14.2f %14.2f %14.2f %14.2f %14.2f %14.2f %14.2f %14.2f %14.2f %14.2f'%seq_stats)
