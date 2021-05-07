@@ -5,7 +5,7 @@ FILENAME="$1.py"
 
 touch $FILENAME
 
-printf "#!/usr/bin/python3\n" > $FILENAME
+printf "#!/usr/bin/env python3\n" > $FILENAME
 printf "import sys\n\n
 
 args = sys.argv
