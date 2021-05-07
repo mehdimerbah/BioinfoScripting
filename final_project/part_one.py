@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import sys
-
+import re
 
 
 args = sys.argv
@@ -40,9 +40,10 @@ dictionary = readFasta(f)
 ## user	0m0.033s
 ## sys	0m0.021s
 
-for key, val in dictionary.items():
-	print(key, ":", val)
-    
+#for key, val in dictionary.items():
+#	print(key, ":", val)
+ 
+
     ########################
 
 f.close()
