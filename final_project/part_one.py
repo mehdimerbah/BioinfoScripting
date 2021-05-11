@@ -120,6 +120,7 @@ def writeStats():
 		#Inform the user that the stats have been written
 		path = os.getcwd()+"/DNAstats.txt"
 		print("\nStats Succesfully Written to: ", path)
+		dest_file.close()
 	except:
 		print('Error with Destination File!')
 		sys.exit()
@@ -141,8 +142,8 @@ def printStats():
 	
 
 
-printStats()
-writeStats()	
+#printStats()
+#writeStats()	
 
 
 
@@ -151,6 +152,36 @@ writeStats()
 #user	0m0.112s
 #sys	0m0.013s
 
+def retrieveStats(sequence_ID):
+	"""
+		@params: sequence_ID: ID of a sequence from DNAstats file
+		This function retrieves statistics for a specific sequence
+		It opens the DNAstats file, searches for the sequence and print itse information on the console.
+	"""
+	stats_file_path = os.getcwd()+"/DNAstats.txt"
+	try:
+		stats = open(stats_file_path, "rt")
+	except:
+		print('Error reading DNAstats File!')
+		sys.exit()
+
+	#if re.match(str(sequence_ID), str(stats)):
+	for line in stats:
+		if sequence_ID in line:
+			print("%s%10s%10s%13s%15s%12s%12s%12s%12s%13s%13s%13s%13s"%('SeqID','#Exons','#Introns','AvgExonLen','AvgIntronLen','%A in Exon','%C in Exon','%G in Exon','%T in Exon','%A in Intron','%C in Intron','%G in Intron','%T in Intron'))
+			print(line)
+			return
+	
+	new_sequence_ID = input("Sequence Not found!\nPlease enter a new ID:\t")
+	retrieveStats(new_sequence_ID)
+	# Current function timing:
+	#real	0m0.053s
+	#user	0m0.041s
+	#sys	0m0.013s
+
+
+
+retrieveStats("Test")
 
 
 		#############################################################
