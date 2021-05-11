@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 
-strippe = input("Please enter a sequence: ")
+stripped = input("Please enter a sequence: ")
 
 trans = []
 

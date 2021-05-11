@@ -49,6 +49,7 @@ def generateDNAStats(seq):
 	@params: seq: A DNA Sequence from a Fasta File to analyze
 	This function generates basic statistics from the DNA sequence.
 	"""
+
 	#Set the sequence pattern we want to match in the following order:
 	# (primer)((EXON)((intron)(EXON))*)(downstreamseq)
 	# the compile function from the re module is just a nice aesthetic and to save time
@@ -170,7 +171,9 @@ def retrieveStats(sequence_ID):
 		if sequence_ID in line:
 			print("%s%10s%10s%13s%15s%12s%12s%12s%12s%13s%13s%13s%13s"%('SeqID','#Exons','#Introns','AvgExonLen','AvgIntronLen','%A in Exon','%C in Exon','%G in Exon','%T in Exon','%A in Intron','%C in Intron','%G in Intron','%T in Intron'))
 			print(line)
-			return
+			global hit_seq_ID
+			hit_seq_ID = sequence_ID
+			return 
 	
 	new_sequence_ID = input("Sequence Not found!\nPlease enter a new ID:\t")
 	retrieveStats(new_sequence_ID)
@@ -180,8 +183,69 @@ def retrieveStats(sequence_ID):
 	#sys	0m0.013s
 
 
+retrieveStats("HCN1")
 
-retrieveStats("Test")
+
+def getPrimer(sequence_ID):
+	"""
+	@params: sequence_ID: the ID of the sequence
+	This function extracts the primer from raw sequence read from a Fasta file
+	"""
+	seq = sequence_dict[sequence_ID]
+	seq_pattern = re.compile("^([agct]+)(([AGCT]+)(([agct]+)([AGCT]+))*)([agct]+)$")
+	match_seq = seq_pattern.search(seq)
+	primer = match_seq.group(1)
+
+	return primer
+
+	# Current function timing:
+	#real	0m0.074s
+	#user	0m0.062s
+	#sys	0m0.012s
+
+
+
+def spliceSeq(sequence_ID):
+	"""
+	@params: sequence_ID: the ID of the sequence
+	This function extracts the spliced exons from a raw sequence read from a fasa file
+	"""
+	seq = sequence_dict[sequence_ID]
+	seq_pattern = re.compile("^([agct]+)(([AGCT]+)(([agct]+)([AGCT]+))*)([agct]+)$")
+	match_seq = seq_pattern.search(seq)
+	stripped_seq = match_seq.group(2)
+	exon_pattern = re.compile("([AGCT]+)")
+	exon_match_list = exon_pattern.findall(stripped_seq)
+	spliced_exons = "".join(exon_match_list)
+
+	return spliced_exons
+	# Current function timing:
+	#real	0m0.085s
+	#user	0m0.072s
+	#sys	0m0.013s
+
+def transcribeSeq(sequence_ID):
+	global mRNA
+	spliced = spliceSeq(sequence_ID)
+	mRNA = spliced.replace('T','U')
+	
+	return mRNA
+
+	# Current function timing:
+	#real	0m0.084s
+	#user	0m0.072s
+	#sys	0m0.013s
+
+
+#print(getPrimer(hit_seq_ID))
+#print(sequence_dict[hit_seq_ID])
+
+#print(spliceSeq(hit_seq_ID))
+#def translateTranscript(mRNA):
+
+#TBD:
+# Add validation function to make sure the functions are working properly
+# Verify function logic
 
 
 		#############################################################
