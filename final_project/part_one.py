@@ -2,6 +2,7 @@
 import sys
 import re
 import os
+import math
 
 
 
@@ -249,6 +250,11 @@ def transcribeSeq(sequence_ID):
 # Add translate function to get aaSeq (get start codon with re)
 
 def translateRNA(mRNA):
+	"""
+	@params: mRNA sequence to translate to protein
+	This function takes in an mRNA sequence then uses a translation hash to translate each
+	codon to an amino acid.
+	"""
 	aaSeq = []
 	trans_map = {"UUU":"F", "UUC":"F", "UUA":"L", "UUG":"L",
 	   "UCU":"S", "UCC":"S", "UCA":"S", "UCG":"S",
@@ -269,8 +275,8 @@ def translateRNA(mRNA):
 
 	idx = re.search("AUG", mRNA).span()[0]
 
-	while idx <= (len(rna)-3):
-		codon = rna[idx:idx+3]
+	while idx <= (len(mRNA)-3):
+		codon = mRNA[idx:idx+3]
 		idx+=3
 		if trans_map[codon] == "STOP":
 			break
@@ -280,9 +286,37 @@ def translateRNA(mRNA):
 	aaSeq = "".join(aaSeq)
 	return aaSeq
 
+	# Current Independent function timing:
+	#real	0m0.033s
+	#user	0m0.033s
+	#sys	0m0.001s
 
+#mRNA = transcribeSeq(hit_seq_ID)
+#protein = translateRNA(mRNA)
 
+#print(protein)
 
+def getPrimerTm():
+	primer = getPrimer(hit_seq_ID)
+	idx = 0
+	min_Tm = math.inf
+	max_Tm = 0
+	Tm_sum = 0
+	while idx < len(primer)-20:
+		window = primer[idx:idx+21]
+		Tm = (window.count('a')+window.count('t'))*2 + (window.count('g')+window.count('c'))*4
+		Tm_sum += Tm
+		min_Tm = min(min_Tm, Tm)
+		max_Tm = max(max_Tm, Tm)
+		idx+=1
+		#print("Primer %d: %s"%(idx,window))
+		#print("Min. Melting Temperature: %d\nMax. Melting Temperature: %d"%(min_Tm, max_Tm)) 
+		
+	avg_Tm = Tm_sum/idx
 
+	print("Primer Melting Temperature:\nAverage Primer-Tm: %.2f\nPrimer Melting Temperature Range: [%d - %d]"%(avg_Tm, min_Tm, max_Tm)) 
+
+print(getPrimer(hit_seq_ID))
+getPrimerTm()
 		#############################################################
 f.close()
