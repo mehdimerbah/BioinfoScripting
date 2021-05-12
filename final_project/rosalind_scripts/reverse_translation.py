@@ -100,3 +100,8 @@ print("Protein: ", protein)
 print("Equivalent codons: ", codons_list)
 print("Possible mRNAs: ")
 cartesianProtein(codons_list)
+
+## Script timing for test protein seq
+#real 0m0.054s
+#user  0m0.045s
+#sys 0m0.009s
