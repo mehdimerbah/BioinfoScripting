@@ -1,0 +1,19 @@
+Protein:  MFN
+
+Possible mRNA Sequences: 
+
+mRNA Sequence 1 : 11.11 %GC
+AUGUUUAAU
+
+mRNA Sequence 2 : 22.22 %GC
+AUGUUUAAC
+
+mRNA Sequence 3 : 22.22 %GC
+AUGUUCAAU
+
+mRNA Sequence 4 : 33.33 %GC
+AUGUUCAAC
+
+Most Probable mRNA Sequence Based on GC content: 
+AUGUUCAAC
+GC Content: 33.33%
