@@ -21,6 +21,8 @@ except:
 
     ######################## Script ###########################
 
+
+# QUESTION 1:
 def readFasta(filename):
 	"""This function reads in a fasta file and stores the sequences in a dictionary
 	seqDict = {'SeqID' : 'SEQ'}"""
@@ -45,6 +47,7 @@ sequence_dict = readFasta(f)
 print("\nThe number of sequences in the file: ", len(sequence_dict.keys()))
 
 
+# QUESTION 2:
 def generateDNAStats(seq):
 	"""
 	@params: seq: A DNA Sequence from a Fasta File to analyze
@@ -98,6 +101,19 @@ def generateDNAStats(seq):
 	return seq_stats
    
 
+def printStats():
+	'''
+	This method prints the sequence statistics to the user on the console
+	'''
+	stats_dict = {}
+	for seqID, sequence in sequence_dict.items():
+		stats_dict[seqID] = generateDNAStats(sequence)
+	print('')
+	print('%100s'%"################ Sequence Stats ################")
+	print("%s%10s%10s%13s%15s%12s%12s%12s%12s%13s%13s%13s%13s"%('SeqID','#Exons','#Introns','AvgExonLen','AvgIntronLen','%A in Exon','%C in Exon','%G in Exon','%T in Exon','%A in Intron','%C in Intron','%G in Intron','%T in Intron'))
+	for seqID, stats in stats_dict.items():
+		print ('%-12s'%seqID, end='') 
+		print ('%d %9d %14.2f %14.2f %11.2f %11.2f %11.2f %11.2f %11.2f %11.2f %11.2f %11.2f'%stats)
 
 def writeStats():
 	'''
@@ -111,6 +127,8 @@ def writeStats():
 		#The stats are then stored in the stats dictionary
 		stats_dict[seqID] = generateDNAStats(sequence)
 
+
+	# QUESTION 3:
 	try:
 		#Opening the destination file
 		dest_file = open("DNAstats.txt", 'wt')
@@ -128,32 +146,15 @@ def writeStats():
 		sys.exit()
 
 	
-def printStats():
-	'''
-	This method prints the sequence statistics to the user on the console
-	'''
-	stats_dict = {}
-	for seqID, sequence in sequence_dict.items():
-		stats_dict[seqID] = generateDNAStats(sequence)
-	print('')
-	print('%100s'%"################ Sequence Stats ################")
-	print("%s%10s%10s%13s%15s%12s%12s%12s%12s%13s%13s%13s%13s"%('SeqID','#Exons','#Introns','AvgExonLen','AvgIntronLen','%A in Exon','%C in Exon','%G in Exon','%T in Exon','%A in Intron','%C in Intron','%G in Intron','%T in Intron'))
-	for seqID, stats in stats_dict.items():
-		print ('%-12s'%seqID, end='') 
-		print ('%d %9d %14.2f %14.2f %11.2f %11.2f %11.2f %11.2f %11.2f %11.2f %11.2f %11.2f'%stats)
-	
-
-
-#printStats()
-#writeStats()	
-
-
+printStats()
+writeStats()	
 
 ## Current Timing:
 #real	0m0.125s
 #user	0m0.112s
 #sys	0m0.013s
 
+# QUESTION 4:
 def retrieveStats(sequence_ID):
 	"""
 		@params: sequence_ID: ID of a sequence from DNAstats file
@@ -171,7 +172,9 @@ def retrieveStats(sequence_ID):
 	for line in stats:
 		if sequence_ID in line:
 			print("%s%10s%10s%13s%15s%12s%12s%12s%12s%13s%13s%13s%13s"%('SeqID','#Exons','#Introns','AvgExonLen','AvgIntronLen','%A in Exon','%C in Exon','%G in Exon','%T in Exon','%A in Intron','%C in Intron','%G in Intron','%T in Intron'))
-			print(line)
+			line = line.strip()
+			line = tuple(line.split("\t"))
+			print('%s%9s%8s%15s%15s%12s%12s%12s%12s%12s%12s%12s%12s'%line)
 			global hit_seq_ID
 			hit_seq_ID = sequence_ID
 			return 
@@ -184,28 +187,12 @@ def retrieveStats(sequence_ID):
 	#sys	0m0.013s
 
 
-retrieveStats("HCN1")
+prompt_seq_ID = input("Enter Sequence ID to Retrieve Stats: ")
+#prompt_seq_ID = "HCN1"
+retrieveStats(prompt_seq_ID)
 
 
-def getPrimer(sequence_ID):
-	"""
-	@params: sequence_ID: the ID of the sequence
-	This function extracts the primer from raw sequence read from a Fasta file
-	"""
-	seq = sequence_dict[sequence_ID]
-	seq_pattern = re.compile("^([agct]+)(([AGCT]+)(([agct]+)([AGCT]+))*)([agct]+)$")
-	match_seq = seq_pattern.search(seq)
-	primer = match_seq.group(1)
-
-	return primer
-
-	# Current function timing:
-	#real	0m0.074s
-	#user	0m0.062s
-	#sys	0m0.012s
-
-
-
+# QUESTION 5:
 def spliceSeq(sequence_ID):
 	"""
 	@params: sequence_ID: the ID of the sequence
@@ -236,18 +223,6 @@ def transcribeSeq(sequence_ID):
 	#real	0m0.084s
 	#user	0m0.072s
 	#sys	0m0.013s
-
-
-#print(getPrimer(hit_seq_ID))
-#print(sequence_dict[hit_seq_ID])
-
-#print(spliceSeq(hit_seq_ID))
-#def translateTranscript(mRNA):
-
-#TBD:
-# Add validation function to make sure the functions are working properly
-# Verify function logic
-# Add translate function to get aaSeq (get start codon with re)
 
 def translateRNA(mRNA):
 	"""
@@ -282,8 +257,18 @@ def translateRNA(mRNA):
 			break
 		else:
 			aaSeq.append(trans_map[codon])
-			
+	
 	aaSeq = "".join(aaSeq)
+
+	# We can write the aaSeq to a file to use in part2
+	try:
+		#Opening the destination file
+		protein_dest_file = open("protein_seq.txt", 'wt')
+		protein_dest_file.write(aaSeq)
+	except:
+		print('Error with Destination File!')
+		sys.exit()
+
 	return aaSeq
 
 	# Current Independent function timing:
@@ -291,10 +276,30 @@ def translateRNA(mRNA):
 	#user	0m0.033s
 	#sys	0m0.001s
 
-#mRNA = transcribeSeq(hit_seq_ID)
-#protein = translateRNA(mRNA)
+mRNA = transcribeSeq(hit_seq_ID)
+protein = translateRNA(mRNA)
+print("The mRNA for the selected sequence:\n%s"%mRNA)
+print("The peptide sequence translated from the mRNA:\n%s"%protein)
 
-#print(protein)
+
+# QUESTION 6:
+def getPrimer(sequence_ID):
+	"""
+	@params: sequence_ID: the ID of the sequence
+	This function extracts the primer from raw sequence read from a Fasta file
+	"""
+	seq = sequence_dict[sequence_ID]
+	seq_pattern = re.compile("^([agct]+)(([AGCT]+)(([agct]+)([AGCT]+))*)([agct]+)$")
+	match_seq = seq_pattern.search(seq)
+	primer = match_seq.group(1)
+
+	return primer
+
+	# Current function timing:
+	#real	0m0.074s
+	#user	0m0.062s
+	#sys	0m0.012s
+
 
 def getPrimerTm():
 	primer = getPrimer(hit_seq_ID)
@@ -302,6 +307,7 @@ def getPrimerTm():
 	min_Tm = math.inf
 	max_Tm = 0
 	Tm_sum = 0
+
 	while idx < len(primer)-20:
 		window = primer[idx:idx+21]
 		Tm = (window.count('a')+window.count('t'))*2 + (window.count('g')+window.count('c'))*4
@@ -316,7 +322,25 @@ def getPrimerTm():
 
 	print("Primer Melting Temperature:\nAverage Primer-Tm: %.2f\nPrimer Melting Temperature Range: [%d - %d]"%(avg_Tm, min_Tm, max_Tm)) 
 
-print(getPrimer(hit_seq_ID))
 getPrimerTm()
+
+
+# Current part_one timing with no Sequence prompt:
+#real	0m0.184s
+#user	0m0.130s
+#sys	0m0.013s
+
+# Current part_one timing with Sequence prompt:
+#real	0m3.939s
+#user	0m0.153s
+#sys	0m0.012s
+
+
+#TBD:
+# Add validation function to make sure the functions are working properly
+# Verify function logic
+
+
+
 		#############################################################
 f.close()
