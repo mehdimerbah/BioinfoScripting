@@ -21,6 +21,17 @@ except:
 
     ######################## Script ###########################
 
+# Setting regex match patterns for reusability: 
+
+#Set the sequence pattern we want to match in the following order:
+	# (primer)((EXON)((intron)(EXON))*)(downstreamseq)
+	# the compile function from the re module is just a nice aesthetic and to save time
+seq_pattern = re.compile("^([agct]+)(([AGCT]+)(([agct]+)([AGCT]+))*)([agct]+)$")
+
+
+#Defining a regex pattern to match exons and introns
+exon_pattern = re.compile("([AGCT]+)")
+intron_pattern = re.compile("([agct]+)")
 
 # QUESTION 1:
 def readFasta(filename):
@@ -53,20 +64,11 @@ def generateDNAStats(seq):
 	@params: seq: A DNA Sequence from a Fasta File to analyze
 	This function generates basic statistics from the DNA sequence.
 	"""
-
-	#Set the sequence pattern we want to match in the following order:
-	# (primer)((EXON)((intron)(EXON))*)(downstreamseq)
-	# the compile function from the re module is just a nice aesthetic and to save time
-	seq_pattern = re.compile("^([agct]+)(([AGCT]+)(([agct]+)([AGCT]+))*)([agct]+)$")
+	# Fir any raw sequence passed we must match the sequence pattern we predefined
 	match_seq = seq_pattern.search(seq)
-
 	#When we strip the adapter sequence and the downstream sequence, 
 	# we are left with just exons and introns
 	stripped_seq = match_seq.group(2)
-
-	#Defining a regex pattern to match exons and introns
-	exon_pattern = re.compile("([AGCT]+)")
-	intron_pattern = re.compile("([agct]+)")
 
 	#The findall function helps us get all the matches for both patterns
 	# it returns a list with all matches
@@ -199,10 +201,8 @@ def spliceSeq(sequence_ID):
 	This function extracts the spliced exons from a raw sequence read from a fasa file
 	"""
 	seq = sequence_dict[sequence_ID]
-	seq_pattern = re.compile("^([agct]+)(([AGCT]+)(([agct]+)([AGCT]+))*)([agct]+)$")
 	match_seq = seq_pattern.search(seq)
 	stripped_seq = match_seq.group(2)
-	exon_pattern = re.compile("([AGCT]+)")
 	exon_match_list = exon_pattern.findall(stripped_seq)
 	spliced_exons = "".join(exon_match_list)
 
@@ -289,7 +289,6 @@ def getPrimer(sequence_ID):
 	This function extracts the primer from raw sequence read from a Fasta file
 	"""
 	seq = sequence_dict[sequence_ID]
-	seq_pattern = re.compile("^([agct]+)(([AGCT]+)(([agct]+)([AGCT]+))*)([agct]+)$")
 	match_seq = seq_pattern.search(seq)
 	primer = match_seq.group(1)
 
