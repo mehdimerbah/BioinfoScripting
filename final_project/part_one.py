@@ -263,7 +263,7 @@ def translateRNA(mRNA):
 	# We can write the aaSeq to a file to use in part2
 	try:
 		#Opening the destination file
-		protein_dest_file = open("protein_seq.txt", 'wt')
+		protein_dest_file = open("peptide_seq.txt", 'wt')
 		protein_dest_file.write(aaSeq)
 	except:
 		print('Error with Destination File!')

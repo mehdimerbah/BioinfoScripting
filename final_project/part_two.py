@@ -8,18 +8,20 @@ import math
 
 #args = sys.argv
 #if len(args) == 1:
-#   print('Please Specify your Fasta filename\nUsage: ./script.py <path/to/fasta>')
+#   print('Please specify path to a file containing peptide sequence:\nUsage: ./script.py <path/to/peptide_seq.txt>')
 #    sys.exit()
 
 try:
     #f = open(args[1], 'rt')
-    f = open('protein_seq.txt', 'rt')
+    f = open('peptide_seq.txt', 'rt')
 except:
     print('File Not Found!')
     sys.exit()
 
 
 protein = f.readline().strip()
+#protein = 'MFNMSVWMW'
+
 
 def aaToCodonList(Protein):
   """
@@ -73,23 +75,14 @@ def cartesianTwoAA(codon_list_x, codon_list_y):
   for i in range(0, len(codon_list_x)):
       #for all codons in the second codon list
       for j in range(0, len(codon_list_y)):
-
-          # Running this for the first time would
-          #create an error if the element is not a list
-          # To fix this: First time the function is called on a single element
-          #we convert that element into a list
-          # Bug result: [['A', 'U', 'G', 'UUU', 'AAU'], ['A', 'U', 'G', 'UUU', 'AAC'], ['A', 'U', 'G', 'UUC', 'AAU'], ['A', 'U', 'G', 'UUC', 'AAC']]
-          if type(codon_list_x[i]) != list:         
-              codon_list_x[i] = [codon_list_x[i]]
-                
           # For all codons in first codon list, we store them in a temp list
           tmp_list = [codon for codon in codon_list_x[i]]
             
           #  Append codon in second list to the temp list      
           tmp_list.append(codon_list_y[j])   
           # Now we append the temporary list to the resulting cartesian product list          
-          result.append(tmp_list)  
-            
+          result.append("".join(tmp_list))  
+  
   return result
 
 
@@ -108,44 +101,74 @@ def cartesianProtein(aa_list):
 
 
 codons_list = aaToCodonList(protein)
-print("Protein: ", protein)
-print("Equivalent codons: ", codons_list)
-print("Possible mRNAs: ")
 mRNA_list = cartesianProtein(codons_list)
 
-for mRNA in mRNA_list:
-		mRNA = "".join(mRNA)
-		print(mRNA)
-
-
 def getGC():
+	"""
+	This function takes the list of possible mRNAs generated from the cartesianProtein function and computes the GC content of each.
+	The sequence with the GC content closest to 50% is chosen as the most probable one.
+	"""
 	rna_dict = {}
 	most_probable = ""
 	deviation = 100
+	
 	for mRNA in mRNA_list:
 		g_count = mRNA.count("G")
 		c_count = mRNA.count("C")
 		gc_content = 100*(g_count+c_count)/float(len(mRNA))
-		rna_dict[str(mRNA)] = gc_content
-		if abs(50-gc_content) <= deviation:
+		rna_dict[mRNA] = gc_content
+		if abs(50-gc_content) < deviation:
 			deviation = abs(50-gc_content)
 			most_probable = mRNA
+	
+	# Defining a key for the sort function
+	#since the items are stored as (key, value) tuples in rna_dict.items() in the form: (mRNA, %GC). we make a function that sets the sorting key to the %GC, i.e. the second element.
+	
+	def sortKey(item):
+		return item[1]
 
 	rna_sequence_list = list(rna_dict.items())
-	rna_sequence_list.sort()
-
+	rna_sequence_list.sort(key = sortKey)
+	# Quick hack to escape the % sign in the formatting. I just stored it in a variable.
+	percent = '%'
 	counter = 1
-	print("Possible mRNA Sequences: ")
+	print("\nPossible mRNA Sequences: \n")
 	for item in rna_sequence_list:
-		print("mRNA Sequence %d : %.2f\n%s\n"%(counter, item[1], item[0]))
+		print("mRNA Sequence %d : %.2f %sGC\n%s\n"%(counter, item[1], percent, item[0]))
 		counter += 1
 
-	print("Most Probable mRNA Sequence Based on %GC content: \n%s\n%GC Content: %.2f"%(most_probable, rna_dict[most_probable]))
+	print("Most Probable mRNA Sequence Based on GC content: \n%s\nGC Content: %.2f%s"%(most_probable, rna_dict[most_probable], percent))
 
 
+print("Protein: ", protein)
 getGC()
 
+# Current timing on 3 amino acid peptide sequence:
+#real	0m0.057s
+#user	0m0.051s
+#sys	0m0.004s
 
- #####################################
+# Current timing for: MSLMVVSMAC
+# Number of mRNA Sequences: 27648
+
+#real	0m0.418s
+#user	0m0.218s
+#sys	0m0.091s
+
+
+# For the sequence: MSLMVVSMACVGVHRK (16 AA)
+##Number of mRNA Sequences: 42,467,328
+##Most Probable mRNA Sequence Based on GC content: 
+#AUGUCUUUAAUGGUUGUUUCUAUGGCUUGCGUCGGCGUCCACCGCAAG
+#GC Content: 50.00%
+
+# Running this code for a full-length peptide sequence from part one would probably melt the CPU
+
+# TBD:
+# Write script to run tests on peptide seqs of diff length on the server
+# recheck code logic and optimize
+
+###########################################################################################################################################
 
 f.close()
+
