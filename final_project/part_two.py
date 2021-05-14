@@ -18,9 +18,11 @@ except:
     print('File Not Found!')
     sys.exit()
 
+# Testing is done on a short peptide sequence.
+# The full-length peptide sequence would take a very (VERY) long time. (increases in factorial rate)
 
-protein = f.readline().strip()
-#protein = 'MFNMSVWMW'
+#protein = f.readline().strip()
+protein = 'MSLMVVSMACVGVHRK'
 
 
 def aaToCodonList(Protein):
@@ -76,8 +78,7 @@ def cartesianTwoAA(codon_list_x, codon_list_y):
       #for all codons in the second codon list
       for j in range(0, len(codon_list_y)):
           # For all codons in first codon list, we store them in a temp list
-          tmp_list = [codon for codon in codon_list_x[i]]
-            
+          tmp_list = [codon_list_x[i]] 
           #  Append codon in second list to the temp list      
           tmp_list.append(codon_list_y[j])   
           # Now we append the temporary list to the resulting cartesian product list          
@@ -161,6 +162,10 @@ getGC()
 ##Most Probable mRNA Sequence Based on GC content: 
 #AUGUCUUUAAUGGUUGUUUCUAUGGCUUGCGUCGGCGUCCACCGCAAG
 #GC Content: 50.00%
+
+#real	10m32.145s
+#user	3m27.942s
+#sys	2m23.052s
 
 # Running this code for a full-length peptide sequence from part one would probably melt the CPU
 
