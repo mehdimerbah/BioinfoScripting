@@ -2,4 +2,11 @@
 
 ### Testing The Scripts
 
-![](Test.gif)
+![](Test.gif)    
+
+
+### How To Use The Scripts
+
+`./part_one path/to/fasta_file.fasta`
+
+`./part_two`

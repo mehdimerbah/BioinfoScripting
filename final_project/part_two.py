@@ -23,8 +23,8 @@ except:
 
 # To use on the sequence selected in part one, uncomment next line and comment-out the one after it. 
 #protein = f.readline().strip() #Assumes peptide seq is on a single line, no spaces in-between AAs.
-#protein = 'MSLMVVSMACVGVHRK'
-protein = 'MFNSW'
+protein = 'MSLMVVSMACVGVHRK'
+
 
 def aaToCodonList(Protein):
   """
