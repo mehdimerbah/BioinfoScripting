@@ -2,7 +2,7 @@
 
 ### Testing The Scripts
 
-The following is a small test of the scripts on the given files.
+The following is a small gif showing a test of the scripts on the given data.
 
 ![](Test.gif)    
 
