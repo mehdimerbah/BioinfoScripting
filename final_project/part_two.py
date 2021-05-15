@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+
 import sys
 import re
 import os
@@ -19,7 +20,10 @@ except:
     sys.exit()
 
 # Testing is done on a short peptide sequence.
-# The full-length peptide sequence would take a very (VERY) long time. (execution time increases at factorial rate)
+# The full-length peptide sequence would take a very (VERY) long time. The cardinality of the resulting set of
+#possible mRNAs is equal to the product of the cardinalities of the sets of codons for each of the amino acids that 
+#constitute the protein. 
+
 
 # To use on the sequence selected in part one, uncomment next line and comment-out the one after it. 
 #protein = f.readline().strip() #Assumes peptide seq is on a single line, no spaces in-between AAs.
@@ -124,15 +128,17 @@ def getGC():
 			most_probable = mRNA
 	
 	# Defining a key for the sort function
-	#since the items are stored as (key, value) tuples in rna_dict.items() in the form: (mRNA, %GC). we make a function that sets the sorting key to the %GC, i.e. the second element.
-	
+	#since the items are stored as (key, value) tuples in rna_dict.items() in the form: (mRNA, %GC). 
+	#we make a function that sets the sorting key to the %GC, i.e. the second element.
 	def sortKey(item):
 		return item[1]
 
 	rna_sequence_list = list(rna_dict.items())
 	rna_sequence_list.sort(key = sortKey)
+
 	# Quick hack to escape the % sign in the formatting. I just stored it in a variable.
 	percent = '%'
+
 	counter = 1
 	print("\nPossible mRNA Sequences: \n")
 	for item in rna_sequence_list:
@@ -172,10 +178,21 @@ getGC()
 ## user	3m27.942s
 ## sys	2m23.052s
 
+
+
+# For the sequence: MEGGGKPNSSSNSRDDGN (18 AA) On the Server
+
+## Number of mRNA Sequences: 1,019,215,872
+## Most Probable mRNA Sequence Based on GC content:
+## AUGGAAGGUGGUGGUAAACCUAAUUCUUCUUCUAACUCCCGCGACGACGGCAAC
+## GC Content: 50.00%
+
+#Running time ~13 Hours
+
 # Running this code for a full-length peptide sequence from part one would probably melt the CPU
 
 
-##################################################################################################################################
+################################################################################################################
 
 f.close()
 
