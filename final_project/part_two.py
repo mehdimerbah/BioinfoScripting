@@ -19,15 +19,16 @@ except:
     sys.exit()
 
 # Testing is done on a short peptide sequence.
-# The full-length peptide sequence would take a very (VERY) long time. (increases in factorial rate)
+# The full-length peptide sequence would take a very (VERY) long time. (execution time increases at factorial rate)
 
-#protein = f.readline().strip()
-protein = 'MSLMVVSMACVGVHRK'
-
+# To use on the sequence selected in part one, uncomment next line and comment-out the one after it. 
+#protein = f.readline().strip() #Assumes peptide seq is on a single line, no spaces in-between AAs.
+#protein = 'MSLMVVSMACVGVHRK'
+protein = 'MFNSW'
 
 def aaToCodonList(Protein):
   """
-  This method generates a list of codons given an amino acid sequence.
+  This method generates a list of repective codons given a peptide sequence.
   """
   trans_map = {"UUU":"F", "UUC":"F", "UUA":"L", "UUG":"L",
      "UCU":"S", "UCC":"S", "UCA":"S", "UCG":"S",
@@ -145,35 +146,36 @@ print("Protein: ", protein)
 getGC()
 
 # Current timing on 3 amino acid peptide sequence:
-#real	0m0.057s
-#user	0m0.051s
-#sys	0m0.004s
+
+## real	0m0.057s
+## user	0m0.051s
+## sys	0m0.004s
+
+
 
 # Current timing for: MSLMVVSMAC
 # Number of mRNA Sequences: 27648
 
-#real	0m0.418s
-#user	0m0.218s
-#sys	0m0.091s
+## real	0m0.418s
+## user	0m0.218s
+## sys	0m0.091s
 
 
 # For the sequence: MSLMVVSMACVGVHRK (16 AA)
-##Number of mRNA Sequences: 42,467,328
-##Most Probable mRNA Sequence Based on GC content: 
-#AUGUCUUUAAUGGUUGUUUCUAUGGCUUGCGUCGGCGUCCACCGCAAG
-#GC Content: 50.00%
 
-#real	10m32.145s
-#user	3m27.942s
-#sys	2m23.052s
+## Number of mRNA Sequences: 42,467,328
+## Most Probable mRNA Sequence Based on GC content: 
+## AUGUCUUUAAUGGUUGUUUCUAUGGCUUGCGUCGGCGUCCACCGCAAG
+## GC Content: 50.00% (Normally, many sequences have 50% GC content so I just take the first)
+
+## real	10m32.145s
+## user	3m27.942s
+## sys	2m23.052s
 
 # Running this code for a full-length peptide sequence from part one would probably melt the CPU
 
-# TBD:
-# Write script to run tests on peptide seqs of diff length on the server
-# recheck code logic and optimize
 
-###########################################################################################################################################
+##################################################################################################################################
 
 f.close()
 
