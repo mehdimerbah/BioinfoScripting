@@ -32,6 +32,7 @@ protein = 'MSLMVVSMACVGVHRK'
 
 def aaToCodonList(Protein):
   """
+  @params: Protein: peptide sequence
   This method generates a list of repective codons given a peptide sequence.
   """
   trans_map = {"UUU":"F", "UUC":"F", "UUA":"L", "UUG":"L",
@@ -73,6 +74,10 @@ def aaToCodonList(Protein):
 
 def cartesianTwoAA(codon_list_x, codon_list_y):
   """
+  @params: codon_list_x, codon_list_y. 
+  codon_list_x: List of possible codons for amino acid x
+  codon_list_y: List of possible codons for amino acid y
+  
   This method take the cartesian product of two sets of codons, one for each amino acid.
   The idea is to take the cartesian product of all sets in a pairwise fashion, so this
   will be a helper method for the cartesianProtein method.
@@ -186,8 +191,12 @@ getGC()
 ## Most Probable mRNA Sequence Based on GC content:
 ## AUGGAAGGUGGUGGUAAACCUAAUUCUUCUUCUAACUCCCGCGACGACGGCAAC
 ## GC Content: 50.00%
+ 
+## Running time ~18 Hours
+## real    1105m22.276s
+## user    315m4.436s
+## sys     484m29.170s
 
-#Running time ~13 Hours
 
 # Running this code for a full-length peptide sequence from part one would probably melt the CPU
 
