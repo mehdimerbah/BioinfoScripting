@@ -11,5 +11,5 @@ Repository for BIF244 Introduction to Scripting class.
 
 ## Perl
 
-TBA.
+`Perl Modules` Perl modules from scratch.
 
