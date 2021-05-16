@@ -27,15 +27,16 @@ sys		0m0.012s
 #### Part Two
 `./part_two`   
 
-**Current timing on 3 amino acid peptide sequence: MFN**       
+**Timing for 3 amino acid peptide sequence: MFN**     
+Number of mRNA Sequences: 4    
 
 `real	0m0.057s   
 user	0m0.051s   
 sys		0m0.004s   
 `
 
-**Current timing for: MSLMVVSMAC**    
-Number of mRNA Sequences: 27648    
+**For the sequence: MSLMVVSMAC (10 AA)**    
+Number of mRNA Sequences: 27648       
 
 `real	0m0.418s   
 user	0m0.218s   
