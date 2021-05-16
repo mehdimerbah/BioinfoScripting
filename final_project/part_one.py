@@ -336,11 +336,5 @@ getPrimerTm()
 #sys	0m0.012s
 
 
-#TBD:
-# Add validation function to make sure the functions are working properly
-# Verify function logic
-
-
-
 		#############################################################
 f.close()
