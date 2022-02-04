@@ -1,15 +1,13 @@
-# BIF244
-Repository for BIF244 Introduction to Scripting class.
+# Scripting for Bioinformatics
+Includes python notebooks for basic python and applications of scripting techniques 
+for Bioinformatics data wrangling and analysis.
 
-## Python
+## Python Notebooks
 
-`Fibonacci.ipynb` is an interactive python notebook to show the difference in computational time to get the n'th Fibonacci number between the standard implementation and one using memoization.
+Python modules from scratch.
 
-`knapsack.py` is an implementation of a Dynamic Programming solution to the [Knapsack](https://en.wikipedia.org/wiki/Knapsack_problem) problem.
+## Perl Scripts
 
-`Python Modules` Seqential modules for Python3 from scratch.
+Basic Perl scripting.
 
-## Perl
-
-`Perl Modules` Perl modules from scratch.
 
